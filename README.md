@@ -1,12 +1,8 @@
 # VSCode-source-code-analysis
 My personal usage for analyzing VSCode (Visual Studio Code) source code.
-
-自己用的，不是给人读的。
-
 > Most reading were done before, tired of rewriting the note.
-> 很多源码读的都差不多了，懒得再去记笔记了。
 
-# Outline
+## Outline
 * [Fundamentals](#Fundamentals)
 * [Main Process](#Main%20Process)
 * [Renderer Process](#Renderer%20Process)
@@ -20,12 +16,12 @@ My personal usage for analyzing VSCode (Visual Studio Code) source code.
 * IPC通信
   * [x] 主进程与渲染进程
   * [x] preload.js文件
-* [ ] VSCode是如何加速"动态加载文件"这个过程的？
 
 ## Main Process
 * VSCode主进程大框架
   * [x] 大框架的理解
   * [x] IPC通信
+* [ ] VSCode是如何加速"动态加载文件"这个过程的？
 
 ## Renderer Process
 * VSCode渲染进程大框架
@@ -40,8 +36,8 @@ My personal usage for analyzing VSCode (Visual Studio Code) source code.
 * MVVM架构
   * [x] 大框架的理解
   * Model
-    * [ ]
+    * [ ] 
   * ViewModel
-    * [ ]
+    * [ ] 
   * View
-    * [ ]
+    * [ ] 
