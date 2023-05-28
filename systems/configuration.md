@@ -5,8 +5,8 @@
 
 我大概可以讲整个配置系统分成以下几个大块：
 1. `ConfigurationRegistry` 类
-2. `ConfigurationService` 微服务 (common)
-3. `WorkspaceService` 微服务（browser）
+2. `ConfigurationService` 主进程微服务
+3. `WorkspaceService` 渲染进程微服务
 
 ## `IConfigurationPropertySchema`接口
 * `IConfigurationPropertySchema`继承了`IJSONSchema`并添加了一些新的字段。
@@ -32,8 +32,8 @@ VSCode通过`ConfigurationRegistry`来注册configurations（特指`IConfigurati
 - `configurationContributors`
   - 这玩意就是一个`IConfigurationNode[]`类型。因为register和deregister配置的时候都是以`IConfigurationNode`为单位的，这个field就是用来追踪哪些`IConfigurationNode`被注册了而已，register的时候push，deregister的时候splice掉。相关的API叫做`getConfigurations`，在整个VSCode的repository中出现的次数很少，应该不是很重要。
 
-## `ConfigurationService`微服务 (common)
-- 该类创建于整个程序的非常初期，初始创建于主进程内，位于`CodeMain`类。
+## `ConfigurationService`主进程微服务
+- 该类创建于整个程序的非常初期，初始创建于**主进程**内，位于`CodeMain`类（不过相关文件存放在了`common`下）。
 - `ConfiguraionService`的代码量很少，都被其他的类分担了。
 - 涉及到了三个比较重要的类: `DefaultConfiguration`和`UserSettings`和`Configuration`（`IPolicyConfiguration`在我写的时候没看懂，目前也不影响我去理解配置系统）。
    - 对于外部程序而言，所有的配置信息都是从`Configuration`类中获取。
@@ -142,4 +142,4 @@ export class Configuration {
 - 代码量虽然挺多，不过主要都是各种各样的整合。
 
 
-## `WorkspaceService`微服务（browser）
+## `WorkspaceService`渲染进程微服务
