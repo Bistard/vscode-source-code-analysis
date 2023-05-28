@@ -1,7 +1,7 @@
 # Configuration System
 整个VSCode的配置系统还是比较复杂繁琐的，代码量很多，我自己没有chatGPT4.0的帮忙的话，读起来够呛。
 
-> 阅读前置知识：`IJSONSchema`。
+> 阅读前置知识：`IJSONSchema`， `Registry`。
 
 我大概可以讲整个配置系统分成以下几个大块：
 1. `ConfigurationRegistry` - class
