@@ -1,11 +1,12 @@
 # 配置系统 - Configuration System
-整个VSCode的配置系统算得上是复杂繁琐的，代码量也很多，我自己没有chatGPT4.0的帮忙的话，读起来够呛。
+整个VSCode的配置系统算得上是复杂繁琐的，代码量也很多，有些部分代码我自己没有chatGPT4.0的帮忙的话，读起来够呛。
 
 > 阅读前置知识：`IJSONSchema`， `Registry`。
 
 我大概可以讲整个配置系统分成以下几个大块：
-1. `ConfigurationRegistry` - class
-2. `ConfigurationService` - microservice (common)
+1. `ConfigurationRegistry` 类
+2. `ConfigurationService` 微服务 (common)
+3. `WorkspaceService` 微服务（browser）
 
 ## `IConfigurationPropertySchema`接口
 * `IConfigurationPropertySchema`继承了`IJSONSchema`并添加了一些新的字段。
@@ -32,7 +33,52 @@ VSCode通过`ConfigurationRegistry`来注册configurations（特指`IConfigurati
   - 这玩意就是一个`IConfigurationNode[]`类型。因为register和deregister配置的时候都是以`IConfigurationNode`为单位的，这个field就是用来追踪哪些`IConfigurationNode`被注册了而已，register的时候push，deregister的时候splice掉。相关的API叫做`getConfigurations`，在整个VSCode的repository中出现的次数很少，应该不是很重要。
 
 ## `ConfigurationService`微服务 (common)
-> 涉及到了三个比较重要的类: `DefaultConfiguration`和`UserSettings`和`Configuration`。在介绍这三个类之前，需要介绍一下它们三都涉及到了一个基础类叫做`ConfigurationModel`。
+- 该类创建于整个程序的非常初期，初始创建于主进程内，位于`CodeMain`类。
+- `ConfiguraionService`的代码量很少，都被其他的类分担了。
+- 涉及到了三个比较重要的类: `DefaultConfiguration`和`UserSettings`和`Configuration`（`IPolicyConfiguration`在我写的时候没看懂，目前也不影响我去理解配置系统）。
+   - 对于外部程序而言，所有的配置信息都是从`Configuration`类中获取。
+- 下面是该微服务的constructor，可以作为参考简单了解一下构造顺序：
+   ```ts
+   export class ConfigurationService extends Disposable implements IConfigurationService, IDisposable {
+
+	declare readonly _serviceBrand: undefined;
+
+	private configuration: Configuration;
+	private readonly defaultConfiguration: DefaultConfiguration;
+	private readonly policyConfiguration: IPolicyConfiguration;
+	private readonly userConfiguration: UserSettings;
+	private readonly reloadConfigurationScheduler: RunOnceScheduler;
+
+	private readonly _onDidChangeConfiguration: Emitter<IConfigurationChangeEvent> = this._register(new Emitter<IConfigurationChangeEvent>());
+	readonly onDidChangeConfiguration: Event<IConfigurationChangeEvent> = this._onDidChangeConfiguration.event;
+
+	constructor(
+		private readonly settingsResource: URI,
+		fileService: IFileService,
+		policyService: IPolicyService,
+		logService: ILogService,
+	) {
+		super();
+		this.defaultConfiguration = this._register(new DefaultConfiguration());
+		this.policyConfiguration = policyService instanceof NullPolicyService ? new NullPolicyConfiguration() : this._register(new PolicyConfiguration(this.defaultConfiguration, policyService, logService));
+		this.userConfiguration = this._register(new UserSettings(this.settingsResource, undefined, extUriBiasedIgnorePathCase, fileService));
+		this.configuration = new Configuration(this.defaultConfiguration.configurationModel, this.policyConfiguration.configurationModel, new ConfigurationModel(), new ConfigurationModel());
+
+		this.reloadConfigurationScheduler = this._register(new RunOnceScheduler(() => this.reloadConfiguration(), 50));
+		this._register(this.defaultConfiguration.onDidChangeConfiguration(({ defaults, properties }) => this.onDidDefaultConfigurationChange(defaults, properties)));
+		this._register(this.policyConfiguration.onDidChangeConfiguration(model => this.onDidPolicyConfigurationChange(model)));
+		this._register(this.userConfiguration.onDidChange(() => this.reloadConfigurationScheduler.schedule()));
+	}
+   
+   async initialize(): Promise<void> {
+		const [defaultModel, policyModel, userModel] = await Promise.all([this.defaultConfiguration.initialize(), this.policyConfiguration.initialize(), this.userConfiguration.loadConfiguration()]);
+		this.configuration = new Configuration(defaultModel, policyModel, new ConfigurationModel(), userModel);
+	}
+   
+   // ...
+   ```
+
+> 在介绍这三个类之前，需要介绍一下它们三都涉及到了一个基础类叫做`ConfigurationModel`。
 
 #### `ConfigurationModel` 类
 - 该类中通过一个object类型来储存对应的configuration。
@@ -61,6 +107,39 @@ VSCode通过`ConfigurationRegistry`来注册configurations（特指`IConfigurati
 - `initialize` API
    - 先调用`reset`，然后监听`ConfigurationRegistry.onDidUpdateConfiguration`事件，并同时更新自己的model。
 
+
 #### `UserSettings` 类
+- 该类需要一个URI指向settingResource，通过内嵌的一个叫`ConfigurationModelParser`从URI读取配置文件，由于一开始读的是源文本，parser需要对其原始数据进行parsing。
+   > 之所以这里需要手动parsing，是因为要利用`ConfigurationRegistry`中的schema进行validation，确保读取的文件里的配置的格式都是正确的。
+   > 如果有任何字段不正确，读进内存的时候都会被filter掉。
+- 读取完后，数据也会被包裹在`ConfigurationModel`中。
+
 
 #### `Configuration`类
+可以先简单看下该类的开头几行（其实我觉得这玩意改名成类似于`ConfigurationCollection`或者`AllConfiguration`更好）：
+```ts
+export class Configuration {
+
+	private _workspaceConsolidatedConfiguration: ConfigurationModel | null = null;
+	private _foldersConsolidatedConfigurations = new ResourceMap<ConfigurationModel>();
+
+	constructor(
+		private _defaultConfiguration: ConfigurationModel,
+		private _policyConfiguration: ConfigurationModel,
+		private _applicationConfiguration: ConfigurationModel,
+		private _localUserConfiguration: ConfigurationModel,
+		private _remoteUserConfiguration: ConfigurationModel = new ConfigurationModel(),
+		private _workspaceConfiguration: ConfigurationModel = new ConfigurationModel(),
+		private _folderConfigurations: ResourceMap<ConfigurationModel> = new ResourceMap<ConfigurationModel>(),
+		private _memoryConfiguration: ConfigurationModel = new ConfigurationModel(),
+		private _memoryConfigurationByResource: ResourceMap<ConfigurationModel> = new ResourceMap<ConfigurationModel>()
+	) {
+	}
+   // ...
+```
+- 在`ConfigurationService.initialized()`调用的时候，会将`DefaultConfiguration`和`UserSettings`里的两个`ConfigurationModel`都传进到`Configuration`中。
+- `Configuration`类基本上可以理解成对于所有的model基于`DefaultConfiguration`的一种整合（所有其他配置会被merge到`DefaultConfiguration`对应的model中）。
+- 代码量虽然挺多，不过主要都是各种各样的整合。
+
+
+## `WorkspaceService`微服务（browser）
