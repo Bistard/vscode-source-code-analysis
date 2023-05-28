@@ -1,4 +1,5 @@
 # `IJSONSchema` Interface
+> https://json-schema.org/
 `IJSONSchema`是VSCode中,一个用于描述 JSON 数据格式的标准。schema可以理解成a set of rules，是用来对传进来的JSON形式的data进行约束的。可以参照下面案例：
 #### Data Example
 ```ts
