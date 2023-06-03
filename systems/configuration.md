@@ -35,6 +35,7 @@ VSCode通过`ConfigurationRegistry`来注册configurations（特指`IConfigurati
 ## `ConfigurationService`主进程微服务
 - 该类创建于整个程序的非常初期，初始创建于**主进程**内，位于`CodeMain`类（不过相关文件存放在了`common`下）。
 - `ConfiguraionService`的代码量很少，都被其他的类分担了。
+- 该微服务不支持`updateValue`的API，意味着你是没法主动进行配置修改的，要么reload要么通过修改源配置文件（JSON文件）。之后提到的`WorkspaceService`支持`updateValue` API。
 - 涉及到了三个比较重要的类: `DefaultConfiguration`和`UserSettings`和`Configuration`（`IPolicyConfiguration`在我写的时候没看懂，目前也不影响我去理解配置系统）。
    - 对于外部程序而言，所有的配置信息都是从`Configuration`类中获取。
 - 下面是该微服务的constructor，可以作为参考简单了解一下构造顺序：
