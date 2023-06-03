@@ -143,3 +143,5 @@ export class Configuration {
 
 
 ## `WorkspaceService`渲染进程微服务
+
+#### `ConfigurationEditing`类
