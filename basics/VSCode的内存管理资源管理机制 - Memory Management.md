@@ -1,4 +1,5 @@
 # 内存管理/资源管理 - Memory Management
+
 因为JavaScript/TypeScript用的是Garabage Collection，所以做不到手动释放内存。不过由于VSCode整个框架之庞大，所以它们在整个程序中采用了一个设计模式叫做**Dispose Pattern**.
 
 # Dispose Pattern
