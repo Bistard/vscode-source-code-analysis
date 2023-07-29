@@ -1,43 +1,31 @@
-# VSCode-source-code-analysis
-My personal usage for analyzing VSCode (Visual Studio Code) source code.
-> Most reading were done before, tired of rewriting the note.
+<h1 align="center">VSCode-Source-Code-Analysis</h1>
+<div align="center">
+  |
+  <a href="README.md">english</a>
+  |
+  <a href="doc/readme/zh-cn.md">简体</a>
+  |
+</div>
 
-## Outline
-* [Fundamentals](#Fundamentals)
-* [Main Process](#Main%20Process)
-* [Renderer Process](#Renderer%20Process)
-* [Microservices](#Microservices)
-* [Editor](#Editor)
+<br>
 
-## Fundamentals
-* [x] Dispose Pattern（内存管理）
-* [x] Dependency Injection（依赖注入）
-* [x] Event Emitter（事件系统）
-* IPC通信
-  * [x] 主进程与渲染进程
-  * [x] preload.js文件
+This repository is where I write my personal understanding of the VSCode framework/software development while reading the VSCode source code. The development of the entire repository is also a reflection of my learning process.
 
-## Main Process
-* VSCode主进程大框架
-  * [x] 大框架的理解
-  * [x] IPC通信
-* [ ] VSCode是如何加速"动态加载文件"这个过程的？
+## Languages
+While writing this series of blogs, I often mix English and Chinese, and some blogs are mainly in English. I won't have enough energy to complete the translation work in a short time.
 
-## Renderer Process
-* VSCode渲染进程大框架
-  * [ ] 大框架的理解
-  * [x] IPC通信
-  * [ ] worker的使用契机
+## Contrbuting
+Since I'm not an insider, my understanding might contain minor errors. You may raise an issue to help me improve.
 
-## Microservices
-* [x] 太多了，懒得列了
-
-## Editor
-* MVVM架构
-  * [x] 大框架的理解
-  * Model
-    * [ ] 
-  * ViewModel
-    * [ ] 
-  * View
-    * [ ] 
+## Table of Contents
+I am willing to categorize all blogs into the following major sections:
+1. Fundamentals
+2. Tools and Technologies
+3. Codebase Overview
+   1. Utilities
+4. Architecture Overview
+   1. Main Process
+   2. Renderer Process
+   3. Shared Process
+   4. Extension Host Process
+   5. Monaco Editor
