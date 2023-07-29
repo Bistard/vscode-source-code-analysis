@@ -1,9 +1,9 @@
 <h1 align="center">VSCode-Source-Code-Analysis</h1>
 <div align="center">
   |
-  <a href="README.md">english</a>
+  <a href="./README.md">english</a>
   |
-  <a href="docs/readme/zh-cn.md">简体</a>
+  <a href="./docs/readme/zh-cn.md">简体</a>
   |
 </div>
 
