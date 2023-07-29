@@ -3,7 +3,7 @@
   |
   <a href="README.md">english</a>
   |
-  <a href="doc/readme/zh-cn.md">简体</a>
+  <a href="docs/readme/zh-cn.md">简体</a>
   |
 </div>
 
