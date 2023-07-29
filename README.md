@@ -22,10 +22,10 @@ I am willing to categorize all blogs into the following major sections:
 1. Fundamentals
 2. Tools and Technologies
 3. Codebase Overview
-   1. Utilities
+   * Utilities
 4. Architecture Overview
-   1. Main Process
-   2. Renderer Process
-   3. Shared Process
-   4. Extension Host Process
-   5. Monaco Editor
+   * Main Process
+   * Renderer Process
+   * Shared Process
+   * Extension Host Process
+   * Monaco Editor
