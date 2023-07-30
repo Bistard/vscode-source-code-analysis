@@ -11,6 +11,8 @@ description: Analysis into the VSCode framework and source code.
 # URL of your avatar or profile pic (you could use your GitHub profile pic)
 avatar: https://raw.githubusercontent.com/barryclark/jekyll-now/master/images/jekyll-logo.png
 
+remote_theme: pages-themes/leap-day@v0.2.0
+
 #
 # Flags below are optional
 #
