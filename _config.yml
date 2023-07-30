@@ -12,7 +12,8 @@ description: Analysis into the VSCode framework and source code.
 avatar: https://raw.githubusercontent.com/barryclark/jekyll-now/master/images/jekyll-logo.png
 
 remote_theme: pages-themes/leap-day@v0.2.0
-
+plugins:
+- jekyll-remote-theme
 #
 # Flags below are optional
 #
