@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Electron Framework"
+title:  "Take a Glance at Electron"
 categories: [VSCode, Tools-and-Technologies]
 ---
 
