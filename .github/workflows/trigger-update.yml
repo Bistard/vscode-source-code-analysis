@@ -12,6 +12,6 @@ jobs:
       - name: Repository Dispatch
         uses: peter-evans/repository-dispatch@v1
         with:
-          token: ${{ secrets.for-Bistard.github.io }}
+          token: ${{ secrets.PERSONAL_TOKEN }}
           repository: Bistard/Bistard.github.io
           event-type: trigger-build
