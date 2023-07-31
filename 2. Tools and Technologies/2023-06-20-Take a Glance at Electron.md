@@ -6,6 +6,9 @@ categories: [VSCode, Tools-and-Technologies]
 
 
 # What is Electron
+<div align="center">
+  <img src="https://github.com/Bistard/vscode-source-code-analysis/assets/38385498/edf7a608-7344-4ad4-804d-106cd84f84e7" alt="image" />
+</div>
 
 Electron is an open-source framework that allows developers to create cross-platform desktop applications using web technologies like JavaScript, HTML, and CSS. 
 * It achieves this by leveraging the **Node.js** runtime for back-end functionality and **Chromium** for front-end display.
@@ -27,7 +30,15 @@ Chromium has two types of processes: the **main process** and the **renderer pro
 * The main process holds references to all the renderer processes and can create/delete them when necessary.
 * Since they are different processes, they cannot access each other’s data directly. The communication between two types of processes is done by an Inter-Process Communication (IPC) system, which is provided by the Electron framework. This section will be discussed in later blogs.
 
+<div align="center">
+  <img src="https://github.com/Bistard/vscode-source-code-analysis/assets/38385498/afb1645a-65bd-48b2-8da4-44cd1026cc5f" alt="image" />
+</div>
+
+
 # Node.js
+<div align="center">
+  <img src="https://github.com/Bistard/vscode-source-code-analysis/assets/38385498/71b7b3c6-4ad3-43fe-a6f7-9c9562293ec5" alt="image" />
+</div>
 Node.js is not a programming language, it is an environment that runs on a JavaScript engine (V8 in VSCode's case, which is used in Chromium) and executes JavaScript code outside a browser environment. 
 
 It gives us the ability to read and write files outside of the browser since the browser normally cannot achieve IO tasks without asking permission from the users. 
@@ -50,6 +61,10 @@ However, given the trade-off of extensive cross-platform compatibility and reduc
 Moreover, with an active community of developers and regular updates, Electron continues to evolve, constantly addressing these concerns and optimizing its performance.
 
 Here is a list of applications that are built by Electron:
+
+<div align="center">
+  <img src="https://github.com/Bistard/vscode-source-code-analysis/assets/38385498/3b507bd4-12d9-4049-b782-c326c860035b" alt="image" />
+</div>
 
 # Reference
 * https://www.debugandrelease.com/the-ultimate-electron-guide/
