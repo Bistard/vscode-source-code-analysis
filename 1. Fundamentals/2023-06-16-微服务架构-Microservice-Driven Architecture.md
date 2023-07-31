@@ -5,7 +5,9 @@ categories: [VSCode, Fundamentals]
 ---
 
 # What is a Microservice?
-![image](https://github.com/Bistard/vscode-source-code-analysis/assets/38385498/3b1bb539-ad13-42f0-8cf1-66a52afdc6a4)
+<div align="center">
+  <img src="https://github.com/Bistard/vscode-source-code-analysis/assets/38385498/3b1bb539-ad13-42f0-8cf1-66a52afdc6a4" alt="image" />
+</div>
 
 Microservice-driven architecture, or simply microservices, is an architectural style that structures an application as a collection of loosely coupled services. 
 
@@ -50,6 +52,7 @@ export class ApplicationInstance extends Disposable implements INotaInstance {
 
 ## Microservices Depends on Microservices
 Similarly, microservices are not special classes, they can also depend on other microservices as well. As an example, the following `MainWindowService` also depends on all sorts of different microservices:
+
 ```ts
 class MainWindowService implements IMainWindowService {
     constructor(
@@ -66,6 +69,7 @@ class MainWindowService implements IMainWindowService {
 From a framework perspective, I can construct `MainWindowService` as follows:
 * Regardless of the specific microservice instance passed through the framework, as long as that instance implements the corresponding interface, the system will function seamlessly.
   * For instance, as long as `FileService`, `TestFileService`, and `NullFileService` have all implemented the interface `IFileService`, the system will operate without issues.
+
 ```ts
 // normal case
 const mainWindowService = new MainWindowService(
@@ -106,6 +110,7 @@ Let's address some potential questions that might arise so far:
 * `InstantiationService` is a concrete solution to achieve the **Dependency Injection (DI) principle**.
 
 To illustrate how `InstantiationService` operates, consider the following API example:
+
 ```ts
 // initialization (acting as DI)
 const instantiationService = new InstantiationService();
@@ -124,6 +129,7 @@ Don’t worry, I will explain these concepts to you step by step.
 
 ## 1. What Is a Dependency Tree?
 A dependency tree represents a hierarchical relationship between different modules (or classes). Recall the previous example, `ApplicationInstance`, its dependency tree would look like the following:
+
 ```
 ApplicationInstance
 ├─ IInstantiationService
@@ -138,6 +144,7 @@ ApplicationInstance
     ├─ IMainLifecycleService
     └─ IEnvironmentService
 ```
+
 ## 2. How Do We Determine a Dependency Tree?
 Following the earlier example, where `MainWindowService` depends on `IFileService`. We can draw a few conclusions about `IFileService`:
 * `IFileService` serves as an abstraction. `IFileService` as an interface, is a syntax sugar from TypeScript, which only exists on compile-time.
@@ -152,6 +159,7 @@ VSCode provide a useful function, `createDecorator`, which creates a unique deco
 > Sidenote: In TypeScript, a decorator is essentially a function.
 
 * The decorator created by `createDecorator`, acts like an identifier, which can be stored in DI to make a connection between the microservice and the concrete class implementation as follows:
+
 ```ts
 // fileService.ts
 const IFileService = createDecorator('file-service'); // note: a variable in TypeScript can have the same name as an interface.
@@ -170,6 +178,7 @@ const instantiationService = new InstantiationService();
 // DI registration (⭐)
 instantiationService.register(IFileService, new FileService()); // we've seen this line of code before
 ```
+
 The decorator performs two functionalities in our cases:
 1. First, since the decorator is a variable, thus it exists in run-time, it can be used in our DI system (`InstantiationService`). As previously mentioned, It establishes a connection between the abstraction concept (`IFileService`) and a concrete implementation (our case is `FileService`), as we've just done in the above example.
    * At line 16, the DI system now recognizes an abstraction (`IFileService`), and a way to construct its corresponding class (`FileService`).
@@ -181,6 +190,7 @@ The decorator performs two functionalities in our cases:
 
 ### 2.2 Build a Dependency Tree at Runtime Using Decorator
 Let’s see what can this decorator be used for:
+
 ```ts
 class MainWindowService implements IMainWindowService {
     constructor(
@@ -194,24 +204,28 @@ class MainWindowService implements IMainWindowService {
     }
 }
 ```
+
 A decorator, as the name tells, is used to add something extra to a class parameter. It does one key job:
 * It marks the decorated class (in this case, `MainWindowService`), which depends on the parameter (e.g. `IFileService`), at runtime.
 
 > You do not need to worry about the black magic behind the decorators created by createDecorator. It works and works elgantly, I can promise you.
 
 > To give you a better illustration of what decorators do, let us consider the following class:
+>
 > ```ts
 > class TestService {
 >     constructor() {}
 > }
 > ```
 > Currently, the class does not depend on anything. We can use an imagined function `getDependencyTreeFor`:
+> 
 > ```ts
 > const dependencies = getDependencyTreeFor(TestService);
 > console.log(dependencies);
 > // []
 > ```
 > Now, we let `TestService` depends on two other services:
+> 
 > ```ts
 > class TestService{
 >     constructor(
@@ -221,6 +235,7 @@ A decorator, as the name tells, is used to add something extra to a class parame
 > }
 > ```
 > If we print out its dependency tree again, we will see different things:
+> 
 > ```ts
 > const dependencies = getDependencyTreeFor(TestService);
 > console.log(dependencies);
@@ -245,6 +260,7 @@ A decorator, as the name tells, is used to add something extra to a class parame
 > ]
 >  */
 > ```
+> 
 > **In essence, the decorator's job is to create and store the above dependency tree at runtime.**
 
 Continuing our example, the complete dependency tree of `MainWindowService` will look like the following:
@@ -275,6 +291,7 @@ Now, we already covered a way to create a dependency tree for our classes. We fi
 For every dependency tree, its tree leaf (the dependency that depends on nothing) cannot be constructed automatically. **It means the leaf must be provided by ourselves**. We call this the registration process.
 
 It is quite simple, recall our previous example:
+
 ```ts
 // initialization (acting as DI)
 const instantiationService = new InstantiationService();
@@ -290,6 +307,7 @@ instantiationService.register(IFileService, new FileService());
 
 ### 3.2 Assembly Factory - `InstantiationService`
 Here comes the final step of constructing a microservice: **assembling**. This is done inside the method `createInstance`:
+
 ```ts
 // construct the service (by its corresponding dependency tree)
 const mainWindowService = instantiationService.createInstance(MainWindowService);
@@ -306,6 +324,7 @@ After all the dependencies have been constructed, the `InstantiationService` use
 Recall the second step when assembling in `InstantiationService`, where it checks 'if the dependency has not been constructed yet'. 
 
 One might wonder how a microservice can be registered into the DI system without actually constructing one. For that, VSCode introduce a utility tool named `SyncDescriptor`:
+
 ```ts
 export class SyncDescriptor<T> {
 
@@ -321,6 +340,7 @@ export class SyncDescriptor<T> {
 }
 ```
 With the help of `SyncDescriptor`, we can achieve lazy loading when registering a microservice:
+
 ```ts
 // initialization (acting as DI)
 const instantiationService = new InstantiationService();
