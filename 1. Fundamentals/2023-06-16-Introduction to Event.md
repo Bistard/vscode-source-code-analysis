@@ -15,6 +15,9 @@ Event-Driven Architecture (EDA) typically consists of three characteristics:
 * **Event manager** - An intermediate, who is responsible for receiving event(s) and broadcasting to the event consumers.
 * **Event consumer** - Who consumes the event(s), upon receiving an event, the event consumer will perform a corresponding action or reaction.
 
+<div align="center">
+  <img src="https://github.com/Bistard/vscode-source-code-analysis/assets/38385498/54cec28d-dae0-4e2e-bf8a-7966e51b3339" alt="image" />
+</div>
 
 There also are some good reasons to use EDA instead of others.
 * **Loose Coupling** - Producers and consumers are unaware of each other due to the presence of an intermediate.
