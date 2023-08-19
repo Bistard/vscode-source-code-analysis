@@ -1,3 +1,9 @@
+---
+layout: post
+title:  "Configuration Service"
+categories: [VSCode, Crucial Systems]
+---
+
 # 配置系统 - Configuration System
 
 > 丑话说前面, 整个配置系统, 我私认为属于VSCode众多大系统中top10甚至top5的复杂系统了. 
