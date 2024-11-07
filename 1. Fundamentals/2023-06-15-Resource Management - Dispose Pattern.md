@@ -8,7 +8,7 @@ categories: [VSCode, Fundamentals]
 
 JavaScript utilizes Garbage Collection (GC) to manage memory. As a result, we don't have direct control over resource management—**we can't tell when a resource is actually released once the reference count of a variable drops to zero**. 
 
-However, we can simulate this process (this is also what VSCode does):
+However, we can simulate this process (this is also how VSCode does it):
 > What is a **resource** then? A resource could be file handles, network sockets, or database connections, as well as more direct allocations of memory (number, string, boolean, arrays, objects, etc.).
 
 Let us consider three examples to illustrate your bad resource (or memory) management:
@@ -57,7 +57,7 @@ class MyArray {
     }
 
     public destruct(): void {
-        this.arr = [];
+        this.arr.length = 0;
     }
 }
 
