@@ -108,7 +108,7 @@ export interface ISubmenuItem {
 	rememberDefaultAction?: boolean;
 }
 ```
-## `MenuId`
+## `MenuId`类
 `MenuId`的定义如下：
 ```ts
 export class MenuId {
