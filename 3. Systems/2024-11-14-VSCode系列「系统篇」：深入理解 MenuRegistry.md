@@ -79,7 +79,7 @@ MenuRegistry.appendMenuItem(MenuId.ExplorerContext, {
 // a bunch of all other registrations...
 ```
 我只列出来4条注册信息，其实这个文件里还注册了非常多其他的功能。其中`MenuId.ExplorerContext`其实所指代的就是文件树里的「右键菜单」。最终在VSCode里呈现的效果如下图所示：
-![alt text](./.image/menu1.png)
+![alt text](/assets/images/menu/menu1.png)
 我来总结一下这4条在干什么：
 1. 4条注册信息都在往一个叫做`MenuId.ExplorerContext`的`MenuId`里注册一条item。每一条item其实就是「右键菜单」的一行按钮。
 2. 比如第一条注册信息，就是注册了一个名字（title）叫做`NEW_FILE_LABEL`，点击按钮之后会运行一个命令（command）叫做`NEW_FILE_COMMAND_ID`。这行按钮的group叫做`navigation`，在渲染的时候会和其他被标记为`navigation`的item一起渲染在一起，然后画一个横线和其他的group分开。而`when`里填写的则是告诉软件这一行item要在`ExplorerFolderContext`条件为true的情况下才渲染。
@@ -173,5 +173,5 @@ export function registerAction2(ctor: { new(): Action2; }): IDisposable {
 }
 ```
 * 其中有一行代码是`MenuRegistry.appendMenuItem(MenuId.CommandPalette, ...)`, 也就是说每注册一次action，在条件允许的情况下（`f1`被定义了）都会往`MenuId.CommandPalette`注册一条。而`CommandPalette`就是下图这个功能（可以通过`ctrl+shift+P`快捷键调出来）：
-![alt text](./.image/menu2.png)
+![alt text](/assets/images/menu/menu2.png)
 * 这里就能看出来，`MenuRegistry`里的注册信息，除了可以为「右键菜单」的渲染服务，也可以为了任何具有「列表性质」的UI服务。所以这个`MenuRegistry`的泛用性极其广泛。
