@@ -21,17 +21,17 @@ VSCode把这种「**右键菜单**」**里所呈现的内容**在代码里面称
 ```ts
 export interface IMenuRegistry {
    readonly onDidChangeMenu: Event<IMenuRegistryChangeEvent>;
-	addCommand(userCommand: ICommandAction): IDisposable;
-	getCommand(id: string): ICommandAction | undefined;
-	getCommands(): ICommandsMap;
+    addCommand(userCommand: ICommandAction): IDisposable;
+    getCommand(id: string): ICommandAction | undefined;
+    getCommands(): ICommandsMap;
 
-	/**
-	 * @deprecated Use `appendMenuItem` or most likely use `registerAction2` instead. There should be no strong
-	 * reason to use this directly.
-	 */
-	appendMenuItems(items: Iterable<{ id: MenuId; item: IMenuItem | ISubmenuItem; }>): IDisposable;
-	appendMenuItem(menu: MenuId, item: IMenuItem | ISubmenuItem): IDisposable;
-	getMenuItems(loc: MenuId): Array<IMenuItem | ISubmenuItem>;
+    /**
+     * @deprecated Use `appendMenuItem` or most likely use `registerAction2` instead. There should be no strong
+     * reason to use this directly.
+     */
+    appendMenuItems(items: Iterable<{ id: MenuId; item: IMenuItem | ISubmenuItem; }>): IDisposable;
+    appendMenuItem(menu: MenuId, item: IMenuItem | ISubmenuItem): IDisposable;
+    getMenuItems(loc: MenuId): Array<IMenuItem | ISubmenuItem>;
 }
 ```
 ## VSCode: `MenuRegistry`和`MenuId`的使用案例
@@ -39,41 +39,41 @@ export interface IMenuRegistry {
 ```ts
 // Menu registration - explorer
 MenuRegistry.appendMenuItem(MenuId.ExplorerContext, {
-	group: 'navigation',
-	order: 4,
-	command: {
-		id: NEW_FILE_COMMAND_ID,
-		title: NEW_FILE_LABEL,
-		precondition: ExplorerResourceNotReadonlyContext
-	},
-	when: ExplorerFolderContext
+    group: 'navigation',
+    order: 4,
+    command: {
+        id: NEW_FILE_COMMAND_ID,
+        title: NEW_FILE_LABEL,
+        precondition: ExplorerResourceNotReadonlyContext
+    },
+    when: ExplorerFolderContext
 });
 // ...
 MenuRegistry.appendMenuItem(MenuId.ExplorerContext, {
-	group: '3_compare',
-	order: 30,
-	command: compareSelectedCommand,
-	when: ContextKeyExpr.and(ExplorerFolderContext.toNegated(), ResourceContextKey.HasResource, WorkbenchListDoubleSelection)
+    group: '3_compare',
+    order: 30,
+    command: compareSelectedCommand,
+    when: ContextKeyExpr.and(ExplorerFolderContext.toNegated(), ResourceContextKey.HasResource, WorkbenchListDoubleSelection)
 });
 // ...
 MenuRegistry.appendMenuItem(MenuId.ExplorerContext, {
-	group: '5_cutcopypaste',
-	order: 10,
-	command: {
-		id: COPY_FILE_ID,
-		title: COPY_FILE_LABEL,
-	},
-	when: ExplorerRootContext.toNegated()
+    group: '5_cutcopypaste',
+    order: 10,
+    command: {
+        id: COPY_FILE_ID,
+        title: COPY_FILE_LABEL,
+    },
+    when: ExplorerRootContext.toNegated()
 });
 MenuRegistry.appendMenuItem(MenuId.ExplorerContext, {
-	group: '5_cutcopypaste',
-	order: 20,
-	command: {
-		id: PASTE_FILE_ID,
-		title: PASTE_FILE_LABEL,
-		precondition: ContextKeyExpr.and(ExplorerResourceNotReadonlyContext, FileCopiedContext)
-	},
-	when: ExplorerFolderContext
+    group: '5_cutcopypaste',
+    order: 20,
+    command: {
+        id: PASTE_FILE_ID,
+        title: PASTE_FILE_LABEL,
+        precondition: ContextKeyExpr.and(ExplorerResourceNotReadonlyContext, FileCopiedContext)
+    },
+    when: ExplorerFolderContext
 });
 // a bunch of all other registrations...
 ```
@@ -86,26 +86,26 @@ MenuRegistry.appendMenuItem(MenuId.ExplorerContext, {
 具体的注册API`appendMenuItem(menu: MenuId, item: IMenuItem | ISubmenuItem): IDisposable`其中的类型定义如下：
 ```ts
 export interface IMenuItem {
-	command: ICommandAction;
-	alt?: ICommandAction;
-	/**
-	 * Menu item is hidden if this expression returns false.
-	 */
-	when?: ContextKeyExpression;
-	group?: 'navigation' | string;
-	order?: number;
-	isHiddenByDefault?: boolean;
+    command: ICommandAction;
+    alt?: ICommandAction;
+    /**
+     * Menu item is hidden if this expression returns false.
+     */
+    when?: ContextKeyExpression;
+    group?: 'navigation' | string;
+    order?: number;
+    isHiddenByDefault?: boolean;
 }
 export interface ISubmenuItem {
-	title: string | ICommandActionTitle;
-	submenu: MenuId;
-	icon?: Icon;
-	when?: ContextKeyExpression;
-	group?: 'navigation' | string;
-	order?: number;
-	isSelection?: boolean;
-	// for dropdown menu: if true the last executed action is remembered as the default action
-	rememberDefaultAction?: boolean;
+    title: string | ICommandActionTitle;
+    submenu: MenuId;
+    icon?: Icon;
+    when?: ContextKeyExpression;
+    group?: 'navigation' | string;
+    order?: number;
+    isSelection?: boolean;
+    // for dropdown menu: if true the last executed action is remembered as the default action
+    rememberDefaultAction?: boolean;
 }
 ```
 ## `MenuId`类
@@ -113,14 +113,14 @@ export interface ISubmenuItem {
 ```ts
 export class MenuId {
 
-	private static readonly _instances = new Map<string, MenuId>();
+    private static readonly _instances = new Map<string, MenuId>();
 
-	static readonly CommandPalette = new MenuId('CommandPalette');
-	static readonly DebugBreakpointsContext = new MenuId('DebugBreakpointsContext');
-	static readonly DebugCallStackContext = new MenuId('DebugCallStackContext');
-	static readonly DebugConsoleContext = new MenuId('DebugConsoleContext');
-	static readonly DebugVariablesContext = new MenuId('DebugVariablesContext');
-	// ...other 180+ menus
+    static readonly CommandPalette = new MenuId('CommandPalette');
+    static readonly DebugBreakpointsContext = new MenuId('DebugBreakpointsContext');
+    static readonly DebugCallStackContext = new MenuId('DebugCallStackContext');
+    static readonly DebugConsoleContext = new MenuId('DebugConsoleContext');
+    static readonly DebugVariablesContext = new MenuId('DebugVariablesContext');
+    // ...other 180+ menus
 }
 ```
 其实这个`MenuId`吧，虽然在VSCode源码里写成了class形式，但我觉得换成`const Enum`，换成`Symbol`之类的也完全可以。class本身的prototype并没有提供任何有用的API。就是`new MenuId(SOME_STRING_ID)`然后拿返回值当作unique identifier使用。
@@ -144,31 +144,31 @@ MenuRegistry.appendMenuItem(MenuId.ExplorerContext, { submenu: MenuId.ExplorerCo
 函数定义如下：
 ```ts
 export function registerAction2(ctor: { new(): Action2; }): IDisposable {
-	const disposables: IDisposable[] = []; // not using `DisposableStore` to reduce startup perf cost
-	const action = new ctor();
-	const { f1, menu, keybinding, ...command } = action.desc;
-	// command ...
-	// menu
-	if (Array.isArray(menu)) {
-		for (const item of menu) {
-			disposables.push(MenuRegistry.appendMenuItem(item.id, { command: { ...command, precondition: item.precondition === null ? undefined : command.precondition }, ...item }));
-		}
+    const disposables: IDisposable[] = []; // not using `DisposableStore` to reduce startup perf cost
+    const action = new ctor();
+    const { f1, menu, keybinding, ...command } = action.desc;
+    // command ...
+    // menu
+    if (Array.isArray(menu)) {
+        for (const item of menu) {
+            disposables.push(MenuRegistry.appendMenuItem(item.id, { command: { ...command, precondition: item.precondition === null ? undefined : command.precondition }, ...item }));
+        }
 
-	} else if (menu) {
-		disposables.push(MenuRegistry.appendMenuItem(menu.id, { command: { ...command, precondition: menu.precondition === null ? undefined : command.precondition }, ...menu }));
-	}
-	if (f1) {
-		disposables.push(MenuRegistry.appendMenuItem(MenuId.CommandPalette, { command, when: command.precondition }));
-		disposables.push(MenuRegistry.addCommand(command));
-	}
+    } else if (menu) {
+        disposables.push(MenuRegistry.appendMenuItem(menu.id, { command: { ...command, precondition: menu.precondition === null ? undefined : command.precondition }, ...menu }));
+    }
+    if (f1) {
+        disposables.push(MenuRegistry.appendMenuItem(MenuId.CommandPalette, { command, when: command.precondition }));
+        disposables.push(MenuRegistry.addCommand(command));
+    }
 
-	// keybinding
-	if (Array.isArray(keybinding)) {
-		// ...
-	} else if (keybinding) {
-		// ...
-	}
-	// ...
+    // keybinding
+    if (Array.isArray(keybinding)) {
+        // ...
+    } else if (keybinding) {
+        // ...
+    }
+    // ...
 }
 ```
 * 其中有一行代码是`MenuRegistry.appendMenuItem(MenuId.CommandPalette, ...)`, 也就是说每注册一次action，在条件允许的情况下（`f1`被定义了）都会往`MenuId.CommandPalette`注册一条。而`CommandPalette`就是下图这个功能（可以通过`ctrl+shift+P`快捷键调出来）：

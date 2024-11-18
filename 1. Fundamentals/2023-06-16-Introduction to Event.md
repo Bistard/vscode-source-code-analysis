@@ -145,20 +145,20 @@ We can assembly the `Emitters` inside our classes to simplify the registering pr
 export class Sash extends Disposable implements ISash {
 
     /** An event which fires whenever the user starts dragging the sash. */
-  	private readonly _onDidStart = this.__register(new Emitter<ISashEvent>());
+      private readonly _onDidStart = this.__register(new Emitter<ISashEvent>());
     public readonly onDidStart: Event<ISashEvent> = this._onDidStart.event;
 
-	/** An event which fires whenever the user moves the mouse while dragging the sash. */
+    /** An event which fires whenever the user moves the mouse while dragging the sash. */
     private readonly _onDidMove = this.__register(new Emitter<ISashEvent>());
-	public readonly onDidMove: Event<ISashEvent> = this._onDidMove.event;
+    public readonly onDidMove: Event<ISashEvent> = this._onDidMove.event;
 
-	/** An event which fires whenever the user stops dragging the sash. */
-	private readonly _onDidEnd = this.__register(new Emitter<void>());
-	public readonly onDidEnd: Event<void> = this._onDidEnd.event;
+    /** An event which fires whenever the user stops dragging the sash. */
+    private readonly _onDidEnd = this.__register(new Emitter<void>());
+    public readonly onDidEnd: Event<void> = this._onDidEnd.event;
 
     /** An event which fires whenever the user double clicks the sash. */
     private readonly _onDidReset = this.__register(new Emitter<void>());
-	public readonly onDidReset: Event<void> = this._onDidReset.event;
+    public readonly onDidReset: Event<void> = this._onDidReset.event;
 }
 ```
 * `_onDidStart` (note it is a private field) is the actual `Emitter` that when a event is detected (e.g. A click action is captured). 

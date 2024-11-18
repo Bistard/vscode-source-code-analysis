@@ -108,26 +108,26 @@ categories: [VSCode, Crucial Systems]
     readonly onDidChangeConfiguration: Event<IConfigurationChangeEvent> = this._onDidChangeConfiguration.event;
     
     constructor(
-    	private readonly settingsResource: URI,
-    	fileService: IFileService,
-    	policyService: IPolicyService,
-    	logService: ILogService,
+        private readonly settingsResource: URI,
+        fileService: IFileService,
+        policyService: IPolicyService,
+        logService: ILogService,
     ) {
-    	super();
-    	this.defaultConfiguration = this._register(new DefaultConfiguration());
-    	this.policyConfiguration = policyService instanceof NullPolicyService ? new NullPolicyConfiguration() : this._register(new PolicyConfiguration(this.defaultConfiguration, policyService, logService));
-    	this.userConfiguration = this._register(new UserSettings(this.settingsResource, undefined, extUriBiasedIgnorePathCase, fileService));
-    	this.configuration = new Configuration(this.defaultConfiguration.configurationModel, this.policyConfiguration.configurationModel, new ConfigurationModel(), new ConfigurationModel());
+        super();
+        this.defaultConfiguration = this._register(new DefaultConfiguration());
+        this.policyConfiguration = policyService instanceof NullPolicyService ? new NullPolicyConfiguration() : this._register(new PolicyConfiguration(this.defaultConfiguration, policyService, logService));
+        this.userConfiguration = this._register(new UserSettings(this.settingsResource, undefined, extUriBiasedIgnorePathCase, fileService));
+        this.configuration = new Configuration(this.defaultConfiguration.configurationModel, this.policyConfiguration.configurationModel, new ConfigurationModel(), new ConfigurationModel());
     
-    	this.reloadConfigurationScheduler = this._register(new RunOnceScheduler(() => this.reloadConfiguration(), 50));
-    	this._register(this.defaultConfiguration.onDidChangeConfiguration(({ defaults, properties }) => this.onDidDefaultConfigurationChange(defaults, properties)));
-    	this._register(this.policyConfiguration.onDidChangeConfiguration(model => this.onDidPolicyConfigurationChange(model)));
-    	this._register(this.userConfiguration.onDidChange(() => this.reloadConfigurationScheduler.schedule()));
+        this.reloadConfigurationScheduler = this._register(new RunOnceScheduler(() => this.reloadConfiguration(), 50));
+        this._register(this.defaultConfiguration.onDidChangeConfiguration(({ defaults, properties }) => this.onDidDefaultConfigurationChange(defaults, properties)));
+        this._register(this.policyConfiguration.onDidChangeConfiguration(model => this.onDidPolicyConfigurationChange(model)));
+        this._register(this.userConfiguration.onDidChange(() => this.reloadConfigurationScheduler.schedule()));
     }
     
     async initialize(): Promise<void> {
-    	const [defaultModel, policyModel, userModel] = await Promise.all([this.defaultConfiguration.initialize(), this.policyConfiguration.initialize(), this.userConfiguration.loadConfiguration()]);
-    	this.configuration = new Configuration(defaultModel, policyModel, new ConfigurationModel(), userModel);
+        const [defaultModel, policyModel, userModel] = await Promise.all([this.defaultConfiguration.initialize(), this.policyConfiguration.initialize(), this.userConfiguration.loadConfiguration()]);
+        this.configuration = new Configuration(defaultModel, policyModel, new ConfigurationModel(), userModel);
     }
     
     // ...
@@ -185,21 +185,21 @@ categories: [VSCode, Crucial Systems]
 ```ts
 export class Configuration {
 
-	private _workspaceConsolidatedConfiguration: ConfigurationModel | null = null;
-	private _foldersConsolidatedConfigurations = new ResourceMap<ConfigurationModel>();
+    private _workspaceConsolidatedConfiguration: ConfigurationModel | null = null;
+    private _foldersConsolidatedConfigurations = new ResourceMap<ConfigurationModel>();
 
-	constructor(
-		private _defaultConfiguration: ConfigurationModel,
-		private _policyConfiguration: ConfigurationModel,
-		private _applicationConfiguration: ConfigurationModel,
-		private _localUserConfiguration: ConfigurationModel,
-		private _remoteUserConfiguration: ConfigurationModel = new ConfigurationModel(),
-		private _workspaceConfiguration: ConfigurationModel = new ConfigurationModel(),
-		private _folderConfigurations: ResourceMap<ConfigurationModel> = new ResourceMap<ConfigurationModel>(),
-		private _memoryConfiguration: ConfigurationModel = new ConfigurationModel(),
-		private _memoryConfigurationByResource: ResourceMap<ConfigurationModel> = new ResourceMap<ConfigurationModel>()
-	) {
-	}
+    constructor(
+        private _defaultConfiguration: ConfigurationModel,
+        private _policyConfiguration: ConfigurationModel,
+        private _applicationConfiguration: ConfigurationModel,
+        private _localUserConfiguration: ConfigurationModel,
+        private _remoteUserConfiguration: ConfigurationModel = new ConfigurationModel(),
+        private _workspaceConfiguration: ConfigurationModel = new ConfigurationModel(),
+        private _folderConfigurations: ResourceMap<ConfigurationModel> = new ResourceMap<ConfigurationModel>(),
+        private _memoryConfiguration: ConfigurationModel = new ConfigurationModel(),
+        private _memoryConfigurationByResource: ResourceMap<ConfigurationModel> = new ResourceMap<ConfigurationModel>()
+    ) {
+    }
    // ...
 ```
 
@@ -223,10 +223,10 @@ export class Configuration {
     export type ConfigurationKey = { type: 'defaults' | 'user' | 'workspaces' | 'folder'; key: string; };
     
     export interface IConfigurationCache {
-    	needsCaching(resource: URI): boolean;
-    	read(key: ConfigurationKey): Promise<string>;
-    	write(key: ConfigurationKey, content: string): Promise<void>;
-    	remove(key: ConfigurationKey): Promise<void>;
+        needsCaching(resource: URI): boolean;
+        read(key: ConfigurationKey): Promise<string>;
+        write(key: ConfigurationKey, content: string): Promise<void>;
+        remove(key: ConfigurationKey): Promise<void>;
     }
     ```
 

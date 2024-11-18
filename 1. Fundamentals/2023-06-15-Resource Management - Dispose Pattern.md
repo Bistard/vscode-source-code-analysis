@@ -230,40 +230,40 @@ resource.dispose(); // Don't forget to dispose of it when done
 In addition, VSCode also provide a simple but powerful base class named `Disposable`. Here is the code:
 ```ts
 export interface IDisposable {
-	dispose(): void;
+    dispose(): void;
 }
 
 export abstract class Disposable implements IDisposable {
 
-	/**
-	 * A disposable that does nothing when it is disposed of.
-	 *
-	 * TODO: This should not be a static property.
-	 */
-	static readonly None = Object.freeze<IDisposable>({ dispose() { } });
+    /**
+     * A disposable that does nothing when it is disposed of.
+     *
+     * TODO: This should not be a static property.
+     */
+    static readonly None = Object.freeze<IDisposable>({ dispose() { } });
 
-	protected readonly _store = new DisposableStore();
+    protected readonly _store = new DisposableStore();
 
-	constructor() {
-		trackDisposable(this);
-		setParentOfDisposable(this._store, this);
-	}
+    constructor() {
+        trackDisposable(this);
+        setParentOfDisposable(this._store, this);
+    }
 
-	public dispose(): void {
-		markAsDisposed(this);
+    public dispose(): void {
+        markAsDisposed(this);
 
-		this._store.dispose();
-	}
+        this._store.dispose();
+    }
 
-	/**
-	 * Adds `o` to the collection of disposables managed by this object.
-	 */
-	protected _register<T extends IDisposable>(o: T): T {
-		if ((o as unknown as Disposable) === this) {
-			throw new Error('Cannot register a disposable on itself!');
-		}
-		return this._store.add(o);
-	}
+    /**
+     * Adds `o` to the collection of disposables managed by this object.
+     */
+    protected _register<T extends IDisposable>(o: T): T {
+        if ((o as unknown as Disposable) === this) {
+            throw new Error('Cannot register a disposable on itself!');
+        }
+        return this._store.add(o);
+    }
 }
 ```
 
@@ -272,23 +272,23 @@ export abstract class Disposable implements IDisposable {
 Here is one of the unit test:
 ```ts
 test('dispose recursively', () => {
-	const mainDisposable = new DisposableManager();
-	
-	const disposable2 = new Disposable();
-	const disposable3 = new DisposableManager();
+    const mainDisposable = new DisposableManager();
+    
+    const disposable2 = new Disposable();
+    const disposable3 = new DisposableManager();
 
-	mainDisposable.register(disposable2);
-	mainDisposable.register(disposable3);
+    mainDisposable.register(disposable2);
+    mainDisposable.register(disposable3);
 
-	const disposable4 = new Disposable();
-	disposable3.register(disposable4);
+    const disposable4 = new Disposable();
+    disposable3.register(disposable4);
 
-	mainDisposable.dispose();
+    mainDisposable.dispose();
 
-	assert.ok(mainDisposable.disposed);
-	assert.ok(disposable2.isDisposed());
-	assert.ok(disposable3.disposed);
-	assert.ok(disposable4.isDisposed());
+    assert.ok(mainDisposable.disposed);
+    assert.ok(disposable2.isDisposed());
+    assert.ok(disposable3.disposed);
+    assert.ok(disposable4.isDisposed());
 });
 ```
 
