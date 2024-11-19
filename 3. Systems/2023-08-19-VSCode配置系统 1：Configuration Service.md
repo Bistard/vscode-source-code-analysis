@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Configuration Service"
-categories: [VSCode, Crucial Systems]
+categories: [VSCode, Systems]
 ---
 
 # 配置系统 - Configuration System

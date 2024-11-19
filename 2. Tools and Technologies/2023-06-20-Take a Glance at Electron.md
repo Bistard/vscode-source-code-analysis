@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Take a Glance at Electron"
-categories: [VSCode, Tools-and-Technologies]
+categories: [VSCode, Fundamentals]
 ---
 
 

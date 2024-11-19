@@ -1,3 +1,9 @@
+---
+layout: post
+categories: [VSCode, Systems]
+---
+
+
 # `IJSONSchema` 接口
 
 > 参考 [JSON Schema 官方网站](https://json-schema.org/)

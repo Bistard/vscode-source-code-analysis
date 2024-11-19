@@ -1,3 +1,8 @@
+---
+layout: post
+categories: [VSCode, Systems]
+---
+
 
 ## 背景介绍
 一个软件中，「右键菜单」是非常平凡的一个操作：
