@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "VSCode系列「UI篇」：中央式动画帧调度"
+title:  "VSCode：Centralized Animation Frame Scheduling"
 categories: [VSCode, UI]
 ---
 
