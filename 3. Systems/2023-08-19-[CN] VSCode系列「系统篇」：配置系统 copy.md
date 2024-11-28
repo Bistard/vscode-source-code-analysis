@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Configuration Service"
+title:  "[CN] VSCode系列「系统篇」：配置系统"
 categories: [VSCode, Systems]
 ---
 
@@ -266,4 +266,3 @@ export class Configuration {
     * 不支持修改默认配置.
     * `writeConfigurationValue`里会初始化一个`ConfigurationEditing`并调用其API.
 * 该类只有一个API叫做`writeConfiguration`.
-* 
