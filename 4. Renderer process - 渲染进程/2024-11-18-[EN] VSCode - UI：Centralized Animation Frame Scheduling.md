@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "VSCode: Centralized Animation Frame Scheduling"
+title: "[EN] VSCode - UI: Centralized Animation Frame Scheduling"
 categories: [VSCode, UI]
 ---
 

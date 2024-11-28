@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "VSCode系列「UI篇」：中央式动画帧调度"
+title:  "[CN] VSCode系列「UI篇」：中央式动画帧调度"
 categories: [VSCode, UI]
 ---
 
