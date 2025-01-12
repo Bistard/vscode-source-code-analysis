@@ -1,5 +1,6 @@
 ---
 layout: post
+title: "[CN] VSCode系列「系统篇」：配置系统2 - JSON Schema"
 categories: [VSCode, Systems]
 ---
 
@@ -100,9 +101,14 @@ export interface IJSONSchema {
 由于没有使用复杂的类型系统，VSCode 的 `IJSONSchema` 将所有的 schema 字段都放在一起，而不是基于类型进行分离。这种方式虽然使得接口定义较为简单，但也导致接口字段较为冗长。
 
 ### VSCode的验证过程
-在 `IJSONSchema` 接口中，虽然定义了大量的字段以方便开发者使用统一格式进行数据描述，但具体的runtime的验证过程在VSCode中我并没有找到哪里被明确规定。
+> 在typescript中光定义一个Interface当然是无法起到数据验证功能的，因为TypeScript其中的类型在编译期间会进行类型擦除，而runtime时则没有任何runtime手段进行验证数据是否符合schema。
+> 因此VSCode也会有相关的runtime代码来检查runtime读取的json数据是否匹配对应的schema。
+
+不过在 `IJSONSchema` 接口中，虽然定义了大量的字段以方便开发者使用统一格式进行数据描述，但具体的runtime的验证过程在VSCode中我并没有找到哪里被明确规定。
 
 我猜测实际的验证是由不同的组件各自负责处理的，这意味着 `IJSONSchema` 并没有提供一个集中化的验证过程，而是依赖于具体实现进行验证。
+
+> 如果在你的项目中，我个人是建议弄一套集中化的验证过程，而不是让各个系统自己负责手动监测。除非有非常特殊的需求/性能敏感的场景。
 
 我唯一能找到的相关验证文件是：
 1. `src\vs\workbench\services\preferences\common\preferencesValidation.ts`
